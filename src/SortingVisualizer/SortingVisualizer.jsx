@@ -1,5 +1,6 @@
 import React from 'react'
 import './SortingVisualizer.css';
+import {mergeSortAlgo} from "../SortingAlgorithms/sortingAlgorithms.js";
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -20,7 +21,11 @@ export default class SortingVisualizer extends React.Component {
         this.setState({ array });
     }
 
-    mergeSort(){}
+    mergeSort(){
+        const sortedArray = mergeSortAlgo(this.state.array)
+        this.state.array = sortedArray;
+    }
+
     quickSort(){}
     heapSort(){}
     bubbleSort(){}
