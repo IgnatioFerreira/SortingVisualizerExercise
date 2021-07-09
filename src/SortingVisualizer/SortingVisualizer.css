@@ -5,8 +5,9 @@
 }
 
 .array-bar {
-    width: 2px;
-    background-color: rgba(212, 0, 255, 0.5);
+    width: 24px;
+    /* background-color: rgba(255, 128, 43, 0.748); */
+    background-color:  #f49f1c;
     display: inline-block;
     margin: 0 1px;
     vertical-align:top;
@@ -19,7 +20,8 @@
 .navbar{
 padding: 10px;
 display: block;
-background-color: rgb(20, 150, 220, 0.8);
+/* background-color: rgb(62, 101, 255); */
+background-color: #030f4f;
 }
 
 #generate{

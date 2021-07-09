@@ -3,9 +3,10 @@ import './SortingVisualizer.css';
 import { getMergeSortAnimations, bubbleSortAnimations } from "../SortingAlgorithms/sortingAlgorithms.js";
 
 const ANIMATION_SPEED_MS = 1;
-const NUMBER_OF_ARRAY_BARS = 370;
-const PRIMARY_COLOR = 'rgba(212, 0, 255, 0.5)';
+const NUMBER_OF_ARRAY_BARS = 50;
+const PRIMARY_COLOR = 'rgba(255, 128, 43, 0.748)';
 const SECONDARY_COLOR = 'red';
+//TODO use quickmath to set the sorted time accoring to the blabla so that it is alway a constant maybe 5 secs
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -26,17 +27,21 @@ export default class SortingVisualizer extends React.Component {
         this.setState({ array });
     }
 
+    getCurrentLengths() {
+        const arrayBars = document.getElementsByClassName('array-bar');
+        const bars = [];
+        for (let index = 0; index < arrayBars.length; index++) {
+            bars.push(document.getElementById(`${index}`).offsetHeight);
+
+        }
+        return bars;
+    }
 
     mergeSort() {
-        const arrayBars = document.getElementsByClassName('array-bar');
-        const barLengths = [];
-        for (let index = 0; index < arrayBars.length; index++) {
-            barLengths.push(document.getElementById(`${index}`).offsetHeight);
-            
-        }
-        const animations = getMergeSortAnimations(barLengths);
+
+        const animations = getMergeSortAnimations(this.getCurrentLengths());
         for (let i = 0; i < animations.length; i++) {
-            // const arrayBars = document.getElementsByClassName('array-bar');
+            const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i % 3 !== 2;
             if (isColorChange) {
                 const [barOneIdx, barTwoIdx] = animations[i];
@@ -60,16 +65,56 @@ export default class SortingVisualizer extends React.Component {
     quickSort() { }
     heapSort() { }
     bubbleSort() {
+        const animations = [];
+        let bars = this.getCurrentLengths();
         
+        let i, j, temp, swapped;
+        for (i = 0; i < bars.length; i++) {
+            swapped = false;
+            for(j = 0; j < bars.length - i - 1; j++){
+                if(bars[j] > bars[j+1]){
+                    temp = bars[j];
+                    bars[j] = bars[j+1];
+                    bars[j+1] = temp;
+                    swapped = true;
+                    animations.push([j, j+1,true]);
+                }
+                animations.push([j, j+1,false]);
+                
+            }
+            if(!swapped){
+                break;
+            }
+        }
+
+        // console.log(animations);
+
+        for (let i = 0; i < animations.length; i++) {
+            let bar1 = document.getElementById(`${animations[i][0]}`).style;
+            let bar2 = document.getElementById(`${animations[i][1]}`).style;
+            
+
+            if(animations[i][2]){
+                console.log(animations[i][2]);
+                setTimeout(() => {
+                    let temp = bar1.height;
+                    bar1.height = bar2.height;
+                    bar2.height = temp;
+                }, i * ANIMATION_SPEED_MS * 5);
+            } else{
+
+            }
+        }
+
+
+
+
     }
     resetArrayAnimation() {
-        const animations = [];
 
         const arrayBars = document.getElementsByClassName('array-bar');
-        const array = [];
         for (let i = 0; i < arrayBars.length; i++) {
             const value = randomIntFromInterval(5, 675);
-            array.push(value);
             setTimeout(() => {
                 const bar = arrayBars[i].style;
                 bar.height = `${value}px`;
@@ -107,7 +152,7 @@ export default class SortingVisualizer extends React.Component {
                         <button onClick={() => this.mergeSort()}>Merge Sort</button>
                         <button onClick={() => this.quickSort()}>Quick Sort</button>
                         <button onClick={() => this.heapSort()}>Heap Sort</button>
-                        <button onClick={() => this.resetArrayAnimation()}>Bubble Sort</button>
+                        <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
                         <button onClick={() => this.testSort()}> Test</button>
                     </div>
                 </div>
