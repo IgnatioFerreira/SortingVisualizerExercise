@@ -28,9 +28,15 @@ export default class SortingVisualizer extends React.Component {
 
 
     mergeSort() {
-        const animations = getMergeSortAnimations(this.state.array);
+        const arrayBars = document.getElementsByClassName('array-bar');
+        const barLengths = [];
+        for (let index = 0; index < arrayBars.length; index++) {
+            barLengths.push(document.getElementById(`${index}`).offsetHeight);
+            
+        }
+        const animations = getMergeSortAnimations(barLengths);
         for (let i = 0; i < animations.length; i++) {
-            const arrayBars = document.getElementsByClassName('array-bar');
+            // const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i % 3 !== 2;
             if (isColorChange) {
                 const [barOneIdx, barTwoIdx] = animations[i];
@@ -53,7 +59,31 @@ export default class SortingVisualizer extends React.Component {
 
     quickSort() { }
     heapSort() { }
-    bubbleSort() { }
+    bubbleSort() {
+        
+    }
+    resetArrayAnimation() {
+        const animations = [];
+
+        const arrayBars = document.getElementsByClassName('array-bar');
+        const array = [];
+        for (let i = 0; i < arrayBars.length; i++) {
+            const value = randomIntFromInterval(5, 675);
+            array.push(value);
+            setTimeout(() => {
+                const bar = arrayBars[i].style;
+                bar.height = `${value}px`;
+
+            }, i * ANIMATION_SPEED_MS * 2);
+        }
+
+
+        //TODO randomize the elements that are already present
+        // for(let i = 0; i < animations.length; i++){
+
+        // }
+
+    }
 
     testSort() {
         for (let i = 0; i < 1; i++) {
@@ -73,11 +103,11 @@ export default class SortingVisualizer extends React.Component {
             <div className="body">
                 <div className="navbar">
                     <div id="buttons">
-                        <button id="generate" onClick={() => this.resetArray()}>Generate New Array</button>
+                        <button id="generate" onClick={() => this.resetArrayAnimation()}>Generate New Array</button>
                         <button onClick={() => this.mergeSort()}>Merge Sort</button>
                         <button onClick={() => this.quickSort()}>Quick Sort</button>
                         <button onClick={() => this.heapSort()}>Heap Sort</button>
-                        <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+                        <button onClick={() => this.resetArrayAnimation()}>Bubble Sort</button>
                         <button onClick={() => this.testSort()}> Test</button>
                     </div>
                 </div>
@@ -85,6 +115,7 @@ export default class SortingVisualizer extends React.Component {
                     {array.map((value, idx) => (
                         <div
                             className="array-bar"
+                            id={idx}
                             key={idx}
                             style={{
                                 height: `${value}px`

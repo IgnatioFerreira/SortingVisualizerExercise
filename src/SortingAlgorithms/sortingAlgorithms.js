@@ -90,5 +90,5 @@ export function bubbleSortAnimations(array) {
             }
         }
     }
-    return array;
+    return animations;
 }
