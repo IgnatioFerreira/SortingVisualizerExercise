@@ -182,3 +182,9 @@ function randomIntFromInterval(min, max) {
 }
 
 //TODO disable generate new array button while sorting
+
+
+
+//   5
+//  / \ 
+// 4   6
