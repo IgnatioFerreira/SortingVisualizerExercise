@@ -1,6 +1,6 @@
 An exercise in which I build a visualizer for the different sorting algorithms
 
-I am following along with Clément Mihailescu to build this app
+I followed along with Clément Mihailescu to build this app
 https://github.com/clementmihailescu/Sorting-Visualizer-Tutorial
 
 Check it out
