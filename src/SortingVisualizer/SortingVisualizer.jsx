@@ -6,9 +6,9 @@ import {
 } from "../SortingAlgorithms/sortingAlgorithms.js";
 
 const ANIMATION_SPEED_MS = 1;
-const NUMBER_OF_ARRAY_BARS = 50;
+const NUMBER_OF_ARRAY_BARS = 25;
 const PRIMARY_COLOR = "#f49f1c";
-const SECONDARY_COLOR = "red";
+const SECONDARY_COLOR = "f49f1c";
 //TODO use quickmath to set the sorted time accoring to the blabla so that it is alway a constant maybe 5 secs
 
 export default class SortingVisualizer extends React.Component {
@@ -40,6 +40,7 @@ export default class SortingVisualizer extends React.Component {
   }
 
   mergeSort() {
+    const mergespeed = 10;
     const animations = getMergeSortAnimations(this.getCurrentLengths());
     for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName("array-bar");
@@ -52,13 +53,13 @@ export default class SortingVisualizer extends React.Component {
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
-        }, i * ANIMATION_SPEED_MS);
+        }, i * ANIMATION_SPEED_MS * mergespeed) ;
       } else {
         setTimeout(() => {
           const [barOneIdx, newHeight] = animations[i];
           const barOneStyle = arrayBars[barOneIdx].style;
           barOneStyle.height = `${newHeight}px`;
-        }, i * ANIMATION_SPEED_MS);
+        }, i * ANIMATION_SPEED_MS * mergespeed);
       }
     }
   }
@@ -92,27 +93,27 @@ export default class SortingVisualizer extends React.Component {
     // console.log(animations);
 
     for (let i = 0; i < animations.length; i++) {
-      const bubblespeed = 1;
+      const bubblespeed = 50;
 
       let bar1 = document.getElementById(`${animations[i][0]}`).style;
       let bar2 = document.getElementById(`${animations[i][1]}`).style;
 
       const colorswap = i % 2 === 0;
-      if (animations[i][2] && colorswap) {
-        console.log(animations[i][2]);
-        setTimeout(() => {
+      setTimeout(() => {
+        if (animations[i][2] && colorswap) {
           let temp = bar1.height;
           bar1.height = bar2.height;
           bar2.height = temp;
-          bar1.backgroundColor = PRIMARY_COLOR;
-          bar2.backgroundColor = PRIMARY_COLOR;
-        }, i * ANIMATION_SPEED_MS * bubblespeed);
-      } else {
-        setTimeout(() => {
           bar1.backgroundColor = SECONDARY_COLOR;
           bar2.backgroundColor = SECONDARY_COLOR;
-        }, i * ANIMATION_SPEED_MS * bubblespeed);
-      }
+        } else if ((!animations[i][2]) && colorswap) {
+          bar1.backgroundColor = "green";
+          bar2.backgroundColor = "green";
+        } else {
+          bar1.backgroundColor = PRIMARY_COLOR;
+          bar2.backgroundColor = PRIMARY_COLOR;
+        }
+      }, i * ANIMATION_SPEED_MS * bubblespeed);
     }
   }
   resetArrayAnimation() {
@@ -136,7 +137,7 @@ export default class SortingVisualizer extends React.Component {
     for (let i = 0; i < 20; i++) {
       let bar1 = document.getElementById(Math.floor(i / 2)).style;
       setTimeout(() => {
-        if (i % 2 == 0) {
+        if (i % 2 === 0) {
           bar1.backgroundColor = SECONDARY_COLOR;
         } else {
           bar1.backgroundColor = "blue";
@@ -155,11 +156,12 @@ export default class SortingVisualizer extends React.Component {
             <button id="generate" onClick={() => this.resetArrayAnimation()}>
               Generate New Array
             </button>
-            <button onClick={() => this.mergeSort()}>Merge Sort</button>
+            {/* <button onClick={() => this.mergeSort()}>Merge Sort</button>
             <button onClick={() => this.quickSort()}>Quick Sort</button>
-            <button onClick={() => this.heapSort()}>Heap Sort</button>
+            <button onClick={() => this.heapSort()}>Heap Sort</button> */}
             <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-            <button onClick={() => this.testSort()}> Test</button>
+            {/* <button onClick={() => this.testSort()} id="generate"> Test</button>
+            <button> Hi! This is a work in progress!</button> */}
           </div>
         </div>
         <div className="array-container">
